@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>InternSL – Find Your Future</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d0d0d;
+    --paper: #f5f2eb;
+    --accent: #e63946;
+    --gold: #f4a261;
+    --teal: #2a9d8f;
+    --soft: #e9e4d8;
+    --mid: #8a8375;
+    --card: #ffffff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    background: var(--ink);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 3px solid var(--accent);
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.4rem;
+    color: var(--paper);
+    letter-spacing: -0.03em;
+  }
+  .logo span { color: var(--accent); }
+
+  .nav-tabs {
+    display: flex;
+    gap: 4px;
+  }
+
+  .nav-tab {
+    background: none;
+    border: none;
+    color: var(--mid);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.02em;
+  }
+  .nav-tab:hover { background: rgba(255,255,255,0.08); color: var(--paper); }
+  .nav-tab.active { background: var(--accent); color: white; }
+
+  .nav-auth { display: flex; gap: 8px; }
+
+  .btn {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 0.85rem;
+    padding: 8px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    letter-spacing: 0.01em;
+  }
+  .btn-ghost { background: transparent; color: var(--paper); border: 1.5px solid rgba(255,255,255,0.25); }
+  .btn-ghost:hover { border-color: var(--paper); }
+  .btn-accent { background: var(--accent); color: white; }
+  .btn-accent:hover { background: #c62b38; transform: translateY(-1px); }
+  .btn-teal { background: var(--teal); color: white; }
+  .btn-teal:hover { background: #238a7e; }
+  .btn-gold { background: var(--gold); color: var(--ink); }
+  .btn-gold:hover { background: #e09248; }
+  .btn-lg { padding: 12px 28px; font-size: 0.95rem; font-weight: 600; }
+  .btn-sm { padding: 6px 14px; font-size: 0.8rem; }
+  .btn-outline { background: transparent; border: 1.5px solid var(--ink); color: var(--ink); }
+  .btn-outline:hover { background: var(--ink); color: var(--paper); }
+
+  /* ── VIEWS ── */
+  .view { display: none; animation: fadeIn 0.35s ease; }
+  .view.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ════════════════════════════
+     STUDENT VIEW
+  ════════════════════════════ */
+  .hero {
+    background: var(--ink);
+    padding: 5rem 2rem 4rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(230,57,70,0.18) 0%, transparent 70%);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: -40px;
+    width: 240px; height: 240px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(42,157,143,0.15) 0%, transparent 70%);
+  }
+
+  .hero-tag {
+    display: inline-block;
+    background: rgba(230,57,70,0.15);
+    border: 1px solid rgba(230,57,70,0.4);
+    color: var(--accent);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 100px;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 800;
+    color: var(--paper);
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+  }
+  .hero h1 em {
+    color: var(--accent);
+    font-style: normal;
+  }
+
+  .hero p {
+    color: var(--mid);
+    font-size: 1.05rem;
+    font-weight: 300;
+    max-width: 480px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.65;
+  }
+
+  .search-bar {
+    display: flex;
+    max-width: 580px;
+    margin: 0 auto;
+    background: var(--paper);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  }
+
+  .search-bar input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 14px 18px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    color: var(--ink);
+    outline: none;
+  }
+
+  .search-bar select {
+    border: none;
+    border-left: 1.5px solid var(--soft);
+    background: transparent;
+    padding: 14px 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    color: var(--mid);
+    outline: none;
+    cursor: pointer;
+  }
+
+  .search-bar button {
+    border: none;
+    background: var(--accent);
+    color: white;
+    padding: 14px 22px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .search-bar button:hover { background: #c62b38; }
+
+  .stats-row {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    margin-top: 3rem;
+    padding-top: 3rem;
+    border-top: 1px solid rgba(255,255,255,0.07);
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--paper);
+  }
+  .stat-label { font-size: 0.78rem; color: var(--mid); letter-spacing: 0.05em; margin-top: 2px; }
+
+  /* Filter bar */
+  .filter-bar {
+    background: var(--card);
+    border-bottom: 1.5px solid var(--soft);
+    padding: 1rem 2rem;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .filter-chip {
+    background: transparent;
+    border: 1.5px solid var(--soft);
+    color: var(--mid);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .filter-chip:hover, .filter-chip.active {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--paper);
+  }
+
+  /* Internship Cards */
+  .section { padding: 2.5rem 2rem; }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 1.5rem;
+  }
+  .section-header h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+    letter-spacing: -0.02em;
+  }
+  .section-header span { font-size: 0.82rem; color: var(--mid); }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .intern-card {
+    background: var(--card);
+    border: 1.5px solid var(--soft);
+    border-radius: 12px;
+    padding: 1.4rem;
+    transition: all 0.25s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .intern-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(230,57,70,0.1);
+  }
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+  }
+
+  .company-logo {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .card-badge {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    padding: 4px 10px;
+    border-radius: 100px;
+  }
+  .badge-new { background: rgba(42,157,143,0.12); color: var(--teal); }
+  .badge-hot { background: rgba(230,57,70,0.1); color: var(--accent); }
+  .badge-remote { background: rgba(244,162,97,0.12); color: #c47b2a; }
+
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+    margin-bottom: 4px;
+  }
+  .card-company { font-size: 0.85rem; color: var(--mid); margin-bottom: 1rem; }
+
+  .card-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 1.2rem;
+  }
+  .tag {
+    font-size: 0.73rem;
+    padding: 3px 10px;
+    border-radius: 4px;
+    background: var(--soft);
+    color: var(--mid);
+    font-weight: 500;
+  }
+
+  .card-meta {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.78rem;
+    color: var(--mid);
+    margin-bottom: 1.2rem;
+  }
+  .card-meta span::before { margin-right: 4px; }
+
+  .card-actions {
+    display: flex;
+    gap: 8px;
+  }
+
+  .applied-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.78rem;
+    color: var(--teal);
+    font-weight: 600;
+  }
+
+  /* Applied List */
+  .applied-list { display: flex; flex-direction: column; gap: 1rem; }
+  .applied-item {
+    background: var(--card);
+    border: 1.5px solid var(--soft);
+    border-radius: 10px;
+    padding: 1.1rem 1.4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+  .applied-info h4 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+  .applied-info p { font-size: 0.82rem; color: var(--mid); margin-top: 2px; }
+  .status-pill {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 100px;
+    white-space: nowrap;
+  }
+  .status-pending { background: rgba(244,162,97,0.15); color: #b86a00; }
+  .status-review { background: rgba(42,157,143,0.12); color: var(--teal); }
+  .status-rejected { background: rgba(230,57,70,0.1); color: var(--accent); }
+  .status-accepted { background: rgba(42,157,143,0.2); color: #1a7a6e; }
+
+  /* ════════════════════════════
+     COMPANY VIEW
+  ════════════════════════════ */
+  .company-hero {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    padding: 4rem 2rem 3rem;
+    border-bottom: 3px solid var(--teal);
+  }
+  .company-hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: var(--paper);
+    letter-spacing: -0.03em;
+    margin-bottom: 0.5rem;
+  }
+  .company-hero p { color: rgba(255,255,255,0.5); font-size: 0.95rem; }
+
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 1.5rem;
+    padding: 2rem;
+  }
+
+  .panel {
+    background: var(--card);
+    border: 1.5px solid var(--soft);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .panel-header {
+    padding: 1.2rem 1.5rem;
+    border-bottom: 1.5px solid var(--soft);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .panel-header h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+  }
+  .panel-body { padding: 1.5rem; }
+
+  .post-form { display: flex; flex-direction: column; gap: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group label { font-size: 0.8rem; font-weight: 600; color: var(--mid); letter-spacing: 0.04em; text-transform: uppercase; }
+  .form-group input, .form-group select, .form-group textarea {
+    border: 1.5px solid var(--soft);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    color: var(--ink);
+    background: var(--paper);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color: var(--teal);
+  }
+  .form-group textarea { min-height: 90px; resize: vertical; }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+  /* Apps panel */
+  .app-item {
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--soft);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+  .app-item:last-child { border-bottom: none; }
+  .app-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: white;
+    flex-shrink: 0;
+  }
+  .app-details h4 { font-size: 0.88rem; font-weight: 600; }
+  .app-details p { font-size: 0.76rem; color: var(--mid); }
+  .app-actions { display: flex; gap: 6px; }
+
+  .metric-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .metric-card {
+    background: var(--paper);
+    border-radius: 10px;
+    padding: 1rem;
+  }
+  .metric-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--ink);
+  }
+  .metric-label { font-size: 0.75rem; color: var(--mid); margin-top: 2px; }
+
+  /* ════════════════════════════
+     ADMIN VIEW
+  ════════════════════════════ */
+  .admin-hero {
+    background: #0d0d0d;
+    padding: 2.5rem 2rem;
+    border-bottom: 3px solid var(--gold);
+  }
+  .admin-hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--paper);
+    letter-spacing: -0.02em;
+  }
+  .admin-hero p { color: var(--mid); font-size: 0.9rem; margin-top: 4px; }
+
+  .admin-layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    min-height: calc(100vh - 160px);
+  }
+
+  .admin-sidebar {
+    background: #111;
+    padding: 1.5rem 1rem;
+    border-right: 1px solid #222;
+  }
+
+  .sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.5);
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-bottom: 4px;
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .sidebar-link:hover { background: rgba(255,255,255,0.06); color: var(--paper); }
+  .sidebar-link.active { background: rgba(244,162,97,0.12); color: var(--gold); }
+
+  .admin-content { padding: 2rem; background: var(--paper); }
+
+  .admin-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .admin-stat-card {
+    background: var(--card);
+    border: 1.5px solid var(--soft);
+    border-radius: 12px;
+    padding: 1.2rem;
+  }
+  .admin-stat-label { font-size: 0.75rem; color: var(--mid); font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+  .admin-stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin: 4px 0;
+  }
+  .admin-stat-change { font-size: 0.75rem; }
+  .up { color: var(--teal); }
+  .down { color: var(--accent); }
+
+  .table-card {
+    background: var(--card);
+    border: 1.5px solid var(--soft);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+  .table-head {
+    padding: 1rem 1.5rem;
+    border-bottom: 1.5px solid var(--soft);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .table-head h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    text-align: left;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--mid);
+    padding: 10px 1.5rem;
+    background: var(--paper);
+    border-bottom: 1.5px solid var(--soft);
+  }
+  td {
+    padding: 12px 1.5rem;
+    font-size: 0.85rem;
+    border-bottom: 1px solid var(--soft);
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(0,0,0,0.015); }
+
+  .action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 5px;
+    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .action-approve { color: var(--teal); }
+  .action-approve:hover { background: rgba(42,157,143,0.1); }
+  .action-reject { color: var(--accent); }
+  .action-reject:hover { background: rgba(230,57,70,0.1); }
+  .action-view { color: var(--mid); }
+  .action-view:hover { background: var(--soft); }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 200;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(4px);
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 2rem;
+    max-width: 480px;
+    width: 90%;
+    animation: modalIn 0.3s ease;
+    border: 1.5px solid var(--soft);
+  }
+  @keyframes modalIn {
+    from { transform: scale(0.95) translateY(20px); opacity: 0; }
+    to { transform: scale(1) translateY(0); opacity: 1; }
+  }
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+  }
+  .modal-header h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .modal-close {
+    background: var(--soft);
+    border: none;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--mid);
+    transition: background 0.15s;
+  }
+  .modal-close:hover { background: #d0c9ba; }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    z-index: 300;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s;
+    border-left: 3px solid var(--teal);
+  }
+  .toast.show { opacity: 1; transform: translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .dashboard-grid { grid-template-columns: 1fr; }
+    .admin-layout { grid-template-columns: 1fr; }
+    .admin-sidebar { display: none; }
+    .admin-stats { grid-template-columns: 1fr 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    .cards-grid { grid-template-columns: 1fr; }
+    .metric-cards { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="logo">Intern<span>SL</span></div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="switchView('student')">👨‍🎓 Student</button>
+    <button class="nav-tab" onclick="switchView('company')">🏢 Company</button>
+    <button class="nav-tab" onclick="switchView('admin')">🛠️ Admin</button>
+  </div>
+  <div class="nav-auth">
+    <button class="btn btn-ghost" onclick="openModal('login')">Login</button>
+    <button class="btn btn-accent" onclick="openModal('register')">Register</button>
+  </div>
+</nav>
+
+<!-- ════════════════════════════
+     STUDENT VIEW
+════════════════════════════ -->
+<div id="view-student" class="view active">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-tag">🇱🇰 Sri Lanka's #1 Internship Platform</div>
+    <h1>Find Your <em>Dream</em><br>Internship Today</h1>
+    <p>IT, Marketing, Design, Finance — 200+ opportunities waiting for you. No middlemen, no hassle.</p>
+
+    <div class="search-bar">
+      <input type="text" placeholder="Search by role, company, or skill...">
+      <select>
+        <option>All Fields</option>
+        <option>IT / Software</option>
+        <option>Marketing</option>
+        <option>Design / UX</option>
+        <option>Finance</option>
+        <option>HR</option>
+      </select>
+      <button>SEARCH</button>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat"><div class="stat-num">247</div><div class="stat-label">Active Listings</div></div>
+      <div class="stat"><div class="stat-num">89</div><div class="stat-label">Companies</div></div>
+      <div class="stat"><div class="stat-num">1.2k</div><div class="stat-label">Students Placed</div></div>
+    </div>
+  </div>
+
+  <!-- Filter Bar -->
+  <div class="filter-bar">
+    <span style="font-size:0.8rem;font-weight:600;color:var(--mid);margin-right:4px;">Filter:</span>
+    <button class="filter-chip active" onclick="setFilter(this)">All</button>
+    <button class="filter-chip" onclick="setFilter(this)">IT / Software</button>
+    <button class="filter-chip" onclick="setFilter(this)">Marketing</button>
+    <button class="filter-chip" onclick="setFilter(this)">Design</button>
+    <button class="filter-chip" onclick="setFilter(this)">Finance</button>
+    <button class="filter-chip" onclick="setFilter(this)">Remote</button>
+    <button class="filter-chip" onclick="setFilter(this)">Paid</button>
+  </div>
+
+  <!-- Listings -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Latest Internships</h2>
+      <span>Showing 6 of 247 results</span>
+    </div>
+
+    <div class="cards-grid">
+
+      <div class="intern-card">
+        <div class="card-top">
+          <div class="company-logo" style="background: linear-gradient(135deg,#e63946,#c62b38);">SZ</div>
+          <span class="card-badge badge-hot">🔥 HOT</span>
+        </div>
+        <div class="card-title">Frontend Developer Intern</div>
+        <div class="card-company">SenzMate · Colombo 03</div>
+        <div class="card-tags">
+          <span class="tag">React</span><span class="tag">CSS</span><span class="tag">JavaScript</span>
+        </div>
+        <div class="card-meta">
+          <span>📅 3 Months</span>
+          <span>💰 Rs. 15,000/mo</span>
+          <span>📍 On-site</span>
+        </div>
+        <div class="card-actions">
+          <button class="btn btn-accent btn-sm" onclick="applyNow('Frontend Developer Intern', 'SenzMate')">Apply Now</button>
+          <button class="btn btn-outline btn-sm">Save</button>
+        </div>
+      </div>
+
+      <div class="intern-card">
+        <div class="card-top">
+          <div class="company-logo" style="background: linear-gradient(135deg,#2a9d8f,#1a7a6e);">WS</div>
+          <span class="card-badge badge-new">✨ NEW</span>
+        </div>
+        <div class="card-title">UI/UX Design Intern</div>
+        <div class="card-company">WSO2 · Colombo 01</div>
+        <div class="card-tags">
+          <span class="tag">Figma</span><span class="tag">Prototyping</span><span class="tag">Research</span>
+        </div>
+        <div class="card-meta">
+          <span>📅 6 Months</span>
+          <span>💰 Rs. 25,000/mo</span>
+          <span>📍 Hybrid</span>
+        </div>
+        <div class="card-actions">
+          <button class="btn btn-accent btn-sm" onclick="applyNow('UI/UX Design Intern', 'WSO2')">Apply Now</button>
+          <button class="btn btn-outline btn-sm">Save</button>
+        </div>
+      </div>
+
+      <div class="intern-card">
+        <div class="card-top">
+          <div class="company-logo" style="background: linear-gradient(135deg,#f4a261,#e07a30);">IK</div>
+          <span class="card-badge badge-remote">🌐 Remote</span>
+        </div>
+        <div class="card-title">Digital Marketing Intern</div>
+        <div class="card-company">IdeaCraft · Remote</div>
+        <div class="card-tags">
+          <span class="tag">SEO</span><span class="tag">Social Media</span><span class="tag">Analytics</span>
+        </div>
+        <div class="card-meta">
+          <span>📅 4 Months</span>
+          <span>💸 Unpaid</span>
+          <span>📍 Remote</span>
+        </div>
+        <div class="card-actions">
+          <button class="btn btn-accent btn-sm" onclick="applyNow('Digital Marketing Intern', 'IdeaCraft')">Apply Now</button>
+          <button class="btn btn-outline btn-sm">Save</button>
+        </div>
+      </div>
+
+      <div class="intern-card">
+        <div class="card-top">
+          <div class="company-logo" style="background: linear-gradient(135deg,#457b9d,#2c5f7a);">HB</div>
+          <span class="card-badge badge-new">✨ NEW</span>
+        </div>
+        <div class="card-title">Data Analyst Intern</div>
+        <div class="card-company">Hayleys BPO · Malabe</div>
+        <div class="card-tags">
+          <span class="tag">Python</span><span class="tag">Excel</span><span class="tag">Power BI</span>
+        </div>
+        <div class="card-meta">
+          <span>📅 3 Months</span>
+          <span>💰 Rs. 18,000/mo</span>
+          <span>📍 On-site</span>
+        </div>
+        <div class="card-actions">
+          <button class="btn btn-accent btn-sm" onclick="applyNow('Data Analyst Intern', 'Hayleys BPO')">Apply Now</button>
+          <button class="btn btn-outline btn-sm">Save</button>
+        </div>
+      </div>
+
+      <div class="intern-card">
+        <div class="card-top">
+          <div class="company-logo" style="background: linear-gradient(135deg,#6a0572,#a30075);">CY</div>
+          <span class="card-badge badge-hot">🔥 HOT</span>
+        </div>
+        <div class="card-title">Cybersecurity Intern</div>
+        <div class="card-company">CyberElixir · Kandy</div>
+        <div class="card-tags">
+          <span class="tag">Linux</span><span class="tag">Networking</span><span class="tag">Ethical Hacking</span>
+        </div>
+        <div class="card-meta">
+          <span>📅 6 Months</span>
+          <span>💰 Rs. 20,000/mo</span>
+          <span>📍 On-site</span>
+        </div>
+        <div class="card-actions">
+          <button class="btn btn-accent btn-sm" onclick="applyNow('Cybersecurity Intern', 'CyberElixir')">Apply Now</button>
+          <button class="btn btn-outline btn-sm">Save</button>
+        </div>
+      </div>
+
+      <div class="intern-card">
+        <div class="card-top">
+          <div class="company-logo" style="background: linear-gradient(135deg,#2d6a4f,#40916c);">LK</div>
+          <span class="card-badge badge-remote">🌐 Remote</span>
+        </div>
+        <div class="card-title">HR & People Ops Intern</div>
+        <div class="card-company">Lanka Tiles · Remote</div>
+        <div class="card-tags">
+          <span class="tag">HR</span><span class="tag">Recruitment</span><span class="tag">MS Office</span>
+        </div>
+        <div class="card-meta">
+          <span>📅 3 Months</span>
+          <span>💰 Rs. 10,000/mo</span>
+          <span>📍 Remote</span>
+        </div>
+        <div class="card-actions">
+          <button class="btn btn-accent btn-sm" onclick="applyNow('HR & People Ops Intern', 'Lanka Tiles')">Apply Now</button>
+          <button class="btn btn-outline btn-sm">Save</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Applied Section -->
+  <div class="section" style="background: var(--soft); border-top: 1.5px solid #d5cfc2;">
+    <div class="section-header">
+      <h2>My Applications</h2>
+      <span id="app-count">3 applications</span>
+    </div>
+    <div class="applied-list" id="applied-list">
+      <div class="applied-item">
+        <div style="display:flex;gap:12px;align-items:center;">
+          <div class="company-logo" style="width:36px;height:36px;font-size:0.8rem;background:linear-gradient(135deg,#e63946,#c62b38);">SZ</div>
+          <div class="applied-info">
+            <h4>Frontend Developer Intern</h4>
+            <p>SenzMate · Applied Jan 10, 2025</p>
+          </div>
+        </div>
+        <span class="status-pill status-review">Under Review</span>
+      </div>
+      <div class="applied-item">
+        <div style="display:flex;gap:12px;align-items:center;">
+          <div class="company-logo" style="width:36px;height:36px;font-size:0.8rem;background:linear-gradient(135deg,#f4a261,#e07a30);">IK</div>
+          <div class="applied-info">
+            <h4>Digital Marketing Intern</h4>
+            <p>IdeaCraft · Applied Jan 5, 2025</p>
+          </div>
+        </div>
+        <span class="status-pill status-accepted">✓ Accepted</span>
+      </div>
+      <div class="applied-item">
+        <div style="display:flex;gap:12px;align-items:center;">
+          <div class="company-logo" style="width:36px;height:36px;font-size:0.8rem;background:linear-gradient(135deg,#457b9d,#2c5f7a);">HB</div>
+          <div class="applied-info">
+            <h4>Data Analyst Intern</h4>
+            <p>Hayleys BPO · Applied Dec 28, 2024</p>
+          </div>
+        </div>
+        <span class="status-pill status-pending">Pending</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ════════════════════════════
+     COMPANY VIEW
+════════════════════════════ -->
+<div id="view-company" class="view">
+
+  <div class="company-hero">
+    <h1>Company Dashboard</h1>
+    <p>Post internships and manage applications — WSO2 Technologies Ltd.</p>
+  </div>
+
+  <div class="dashboard-grid">
+
+    <!-- Post Form + Posted Listings -->
+    <div>
+
+      <!-- Metrics -->
+      <div class="metric-cards" style="margin-bottom:1.5rem;">
+        <div class="metric-card">
+          <div class="metric-num" style="color:var(--teal);">3</div>
+          <div class="metric-label">Active Listings</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-num">47</div>
+          <div class="metric-label">Total Applicants</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-num" style="color:var(--gold);">12</div>
+          <div class="metric-label">Under Review</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-num" style="color:var(--accent);">5</div>
+          <div class="metric-label">Shortlisted</div>
+        </div>
+      </div>
+
+      <!-- Post New Internship -->
+      <div class="panel">
+        <div class="panel-header">
+          <h3>📝 Post New Internship</h3>
+        </div>
+        <div class="panel-body">
+          <div class="post-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Role Title</label>
+                <input type="text" placeholder="e.g. Frontend Developer Intern">
+              </div>
+              <div class="form-group">
+                <label>Department</label>
+                <select>
+                  <option>IT / Software</option>
+                  <option>Design / UX</option>
+                  <option>Marketing</option>
+                  <option>Finance</option>
+                  <option>HR</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Duration</label>
+                <select>
+                  <option>3 Months</option>
+                  <option>6 Months</option>
+                  <option>1 Year</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Monthly Allowance</label>
+                <input type="text" placeholder="e.g. Rs. 15,000 (or Unpaid)">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Location / Mode</label>
+              <select>
+                <option>On-site – Colombo</option>
+                <option>Remote</option>
+                <option>Hybrid</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Description & Requirements</label>
+              <textarea placeholder="Describe the role, required skills, and what the intern will learn..."></textarea>
+            </div>
+            <button class="btn btn-teal btn-lg" style="align-self:flex-start;" onclick="postInternship()">Publish Internship →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar: Applications -->
+    <div>
+      <div class="panel">
+        <div class="panel-header">
+          <h3>🧑‍💼 Recent Applicants</h3>
+          <span style="font-size:0.78rem;color:var(--mid);">47 total</span>
+        </div>
+        <div class="panel-body" style="padding-top:0.5rem;">
+
+          <div class="app-item">
+            <div style="display:flex;gap:10px;align-items:center;">
+              <div class="app-avatar" style="background:linear-gradient(135deg,#e63946,#c62b38);">N</div>
+              <div class="app-details">
+                <h4>Nethmi Perera</h4>
+                <p>UI/UX Design Intern · SLIIT</p>
+              </div>
+            </div>
+            <div class="app-actions">
+              <button class="action-btn action-approve" onclick="showToast('✓ Nethmi shortlisted!')">✓</button>
+              <button class="action-btn action-reject" onclick="showToast('Nethmi rejected.')">✕</button>
+            </div>
+          </div>
+
+          <div class="app-item">
+            <div style="display:flex;gap:10px;align-items:center;">
+              <div class="app-avatar" style="background:linear-gradient(135deg,#2a9d8f,#1a7a6e);">K</div>
+              <div class="app-details">
+                <h4>Kavindu Wickrama</h4>
+                <p>UI/UX Design Intern · UoM</p>
+              </div>
+            </div>
+            <div class="app-actions">
+              <button class="action-btn action-approve" onclick="showToast('✓ Kavindu shortlisted!')">✓</button>
+              <button class="action-btn action-reject" onclick="showToast('Kavindu rejected.')">✕</button>
+            </div>
+          </div>
+
+          <div class="app-item">
+            <div style="display:flex;gap:10px;align-items:center;">
+              <div class="app-avatar" style="background:linear-gradient(135deg,#f4a261,#e07a30);">S</div>
+              <div class="app-details">
+                <h4>Sanduni Fernando</h4>
+                <p>Frontend Dev Intern · NSBM</p>
+              </div>
+            </div>
+            <div class="app-actions">
+              <button class="action-btn action-approve" onclick="showToast('✓ Sanduni shortlisted!')">✓</button>
+              <button class="action-btn action-reject" onclick="showToast('Sanduni rejected.')">✕</button>
+            </div>
+          </div>
+
+          <div class="app-item">
+            <div style="display:flex;gap:10px;align-items:center;">
+              <div class="app-avatar" style="background:linear-gradient(135deg,#6a0572,#a30075);">A</div>
+              <div class="app-details">
+                <h4>Ashan Jayasooriya</h4>
+                <p>Frontend Dev Intern · IIT</p>
+              </div>
+            </div>
+            <div class="app-actions">
+              <button class="action-btn action-approve" onclick="showToast('✓ Ashan shortlisted!')">✓</button>
+              <button class="action-btn action-reject" onclick="showToast('Ashan rejected.')">✕</button>
+            </div>
+          </div>
+
+          <div class="app-item">
+            <div style="display:flex;gap:10px;align-items:center;">
+              <div class="app-avatar" style="background:linear-gradient(135deg,#2d6a4f,#40916c);">D</div>
+              <div class="app-details">
+                <h4>Dilasha Rathnayake</h4>
+                <p>HR Intern · APIIT</p>
+              </div>
+            </div>
+            <div class="app-actions">
+              <button class="action-btn action-approve" onclick="showToast('✓ Dilasha shortlisted!')">✓</button>
+              <button class="action-btn action-reject" onclick="showToast('Dilasha rejected.')">✕</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════
+     ADMIN VIEW
+════════════════════════════ -->
+<div id="view-admin" class="view">
+
+  <div class="admin-hero">
+    <h1>⚙️ Admin Panel</h1>
+    <p>Platform management · InternSL v1.0 · Last updated: 14 Feb 2026</p>
+  </div>
+
+  <div class="admin-layout">
+
+    <!-- Sidebar -->
+    <div class="admin-sidebar">
+      <button class="sidebar-link active">📊 Overview</button>
+      <button class="sidebar-link">🏢 Companies</button>
+      <button class="sidebar-link">📋 Internships</button>
+      <button class="sidebar-link">👥 Students</button>
+      <button class="sidebar-link">🚩 Flagged Posts</button>
+      <button class="sidebar-link" style="margin-top:auto;color:var(--accent);">🚪 Logout</button>
+    </div>
+
+    <!-- Content -->
+    <div class="admin-content">
+
+      <!-- Stats -->
+      <div class="admin-stats">
+        <div class="admin-stat-card">
+          <div class="admin-stat-label">Total Students</div>
+          <div class="admin-stat-num">1,284</div>
+          <div class="admin-stat-change up">↑ 23 this week</div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="admin-stat-label">Companies</div>
+          <div class="admin-stat-num">89</div>
+          <div class="admin-stat-change up">↑ 4 pending approval</div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="admin-stat-label">Active Listings</div>
+          <div class="admin-stat-num">247</div>
+          <div class="admin-stat-change up">↑ 12 new today</div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="admin-stat-label">Flagged Posts</div>
+          <div class="admin-stat-num" style="color:var(--accent);">3</div>
+          <div class="admin-stat-change down">Needs review</div>
+        </div>
+      </div>
+
+      <!-- Pending Companies -->
+      <div class="table-card">
+        <div class="table-head">
+          <h3>🏢 Companies Pending Approval</h3>
+          <span style="font-size:0.78rem;background:rgba(230,57,70,0.1);color:var(--accent);padding:3px 10px;border-radius:100px;font-weight:600;">4 pending</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Company</th>
+              <th>Contact</th>
+              <th>Industry</th>
+              <th>Registered</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>TechNexus Pvt Ltd</strong></td>
+              <td>info@technexus.lk</td>
+              <td>IT / Software</td>
+              <td>Feb 13, 2026</td>
+              <td>
+                <button class="action-btn action-approve" onclick="showToast('✓ TechNexus approved!')">Approve</button>
+                <button class="action-btn action-reject" onclick="showToast('TechNexus rejected.')">Reject</button>
+                <button class="action-btn action-view">View</button>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>BlueSky Marketing</strong></td>
+              <td>hr@bluesky.lk</td>
+              <td>Marketing</td>
+              <td>Feb 12, 2026</td>
+              <td>
+                <button class="action-btn action-approve" onclick="showToast('✓ BlueSky approved!')">Approve</button>
+                <button class="action-btn action-reject" onclick="showToast('BlueSky rejected.')">Reject</button>
+                <button class="action-btn action-view">View</button>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Pixel Creative Studio</strong></td>
+              <td>hello@pixelcs.lk</td>
+              <td>Design</td>
+              <td>Feb 12, 2026</td>
+              <td>
+                <button class="action-btn action-approve" onclick="showToast('✓ Pixel Studio approved!')">Approve</button>
+                <button class="action-btn action-reject" onclick="showToast('Pixel Studio rejected.')">Reject</button>
+                <button class="action-btn action-view">View</button>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>GreenFinance LK</strong></td>
+              <td>intern@greenfinance.lk</td>
+              <td>Finance</td>
+              <td>Feb 11, 2026</td>
+              <td>
+                <button class="action-btn action-approve" onclick="showToast('✓ GreenFinance approved!')">Approve</button>
+                <button class="action-btn action-reject" onclick="showToast('GreenFinance rejected.')">Reject</button>
+                <button class="action-btn action-view">View</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Flagged Posts -->
+      <div class="table-card">
+        <div class="table-head">
+          <h3>🚩 Flagged Internship Posts</h3>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Listing</th>
+              <th>Company</th>
+              <th>Reason</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Social Media Manager</strong></td>
+              <td>XYZ Agency</td>
+              <td><span style="color:var(--accent);font-size:0.78rem;">Misleading requirements</span></td>
+              <td>
+                <button class="action-btn action-view">Review</button>
+                <button class="action-btn action-reject" onclick="showToast('Post removed.')">Remove</button>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Full Stack Dev</strong></td>
+              <td>Unknown Tech</td>
+              <td><span style="color:var(--accent);font-size:0.78rem;">Unverified company</span></td>
+              <td>
+                <button class="action-btn action-view">Review</button>
+                <button class="action-btn action-reject" onclick="showToast('Post removed.')">Remove</button>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Content Writer</strong></td>
+              <td>Media Hub LK</td>
+              <td><span style="color:var(--accent);font-size:0.78rem;">Duplicate post</span></td>
+              <td>
+                <button class="action-btn action-view">Review</button>
+                <button class="action-btn action-reject" onclick="showToast('Post removed.')">Remove</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ── LOGIN MODAL ── -->
+<div class="modal-overlay" id="modal-login">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <h2>Welcome Back</h2>
+        <p style="font-size:0.82rem;color:var(--mid);margin-top:3px;">Sign in to InternSL</p>
+      </div>
+      <button class="modal-close" onclick="closeModal('login')">✕</button>
+    </div>
+    <div class="post-form">
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="you@university.lk">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" placeholder="••••••••">
+      </div>
+      <div style="display:flex;gap:10px;margin-top:0.5rem;">
+        <button class="btn btn-accent btn-lg" style="flex:1;" onclick="loginUser()">Sign In</button>
+      </div>
+      <p style="text-align:center;font-size:0.82rem;color:var(--mid);">No account? <a href="#" onclick="closeModal('login');openModal('register')" style="color:var(--accent);font-weight:600;">Register here</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- ── REGISTER MODAL ── -->
+<div class="modal-overlay" id="modal-register">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <h2>Join InternSL</h2>
+        <p style="font-size:0.82rem;color:var(--mid);margin-top:3px;">Create your account</p>
+      </div>
+      <button class="modal-close" onclick="closeModal('register')">✕</button>
+    </div>
+    <div class="post-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" placeholder="Nethmi">
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" placeholder="Perera">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>I am a...</label>
+        <select>
+          <option>Student</option>
+          <option>Company / Employer</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="you@university.lk">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" placeholder="Create a strong password">
+      </div>
+      <button class="btn btn-accent btn-lg" style="margin-top:0.5rem;" onclick="registerUser()">Create Account →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── APPLY MODAL ── -->
+<div class="modal-overlay" id="modal-apply">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <h2 id="apply-title">Apply Now</h2>
+        <p style="font-size:0.82rem;color:var(--mid);margin-top:3px;" id="apply-company">Company Name</p>
+      </div>
+      <button class="modal-close" onclick="closeModal('apply')">✕</button>
+    </div>
+    <div class="post-form">
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" placeholder="Your name">
+      </div>
+      <div class="form-group">
+        <label>University / Institute</label>
+        <input type="text" placeholder="e.g. SLIIT, UoM, NSBM">
+      </div>
+      <div class="form-group">
+        <label>Cover Letter</label>
+        <textarea placeholder="Why do you want this internship? What skills do you bring?"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Upload CV (PDF)</label>
+        <input type="file" accept=".pdf" style="padding:8px;">
+      </div>
+      <button class="btn btn-accent btn-lg" onclick="submitApplication()">Submit Application →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── TOAST ── -->
+<div class="toast" id="toast"></div>
+
+<script>
+  // View switcher
+  function switchView(view) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('view-' + view).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  // Filter chips
+  function setFilter(el) {
+    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // Modals
+  function openModal(name) {
+    document.getElementById('modal-' + name).classList.add('open');
+  }
+  function closeModal(name) {
+    document.getElementById('modal-' + name).classList.remove('open');
+  }
+  // Close on overlay click
+  document.querySelectorAll('.modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', function(e) {
+      if (e.target === this) this.classList.remove('open');
+    });
+  });
+
+  // Apply
+  let applyRole = '', applyComp = '';
+  function applyNow(role, company) {
+    applyRole = role; applyComp = company;
+    document.getElementById('apply-title').textContent = role;
+    document.getElementById('apply-company').textContent = company;
+    openModal('apply');
+  }
+
+  // Submit application
+  function submitApplication() {
+    closeModal('apply');
+    // Add to applied list
+    const list = document.getElementById('applied-list');
+    const colors = ['#e63946','#2a9d8f','#f4a261','#457b9d','#6a0572','#2d6a4f'];
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    const initials = applyComp.slice(0,2).toUpperCase();
+    const today = new Date().toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'});
+
+    const item = document.createElement('div');
+    item.className = 'applied-item';
+    item.innerHTML = `
+      <div style="display:flex;gap:12px;align-items:center;">
+        <div class="company-logo" style="width:36px;height:36px;font-size:0.8rem;background:linear-gradient(135deg,${color},${color}cc);">${initials}</div>
+        <div class="applied-info">
+          <h4>${applyRole}</h4>
+          <p>${applyComp} · Applied ${today}</p>
+        </div>
+      </div>
+      <span class="status-pill status-pending">Pending</span>
+    `;
+    item.style.opacity = '0'; item.style.transform = 'translateY(10px)';
+    list.prepend(item);
+    setTimeout(() => { item.style.transition = 'all 0.35s'; item.style.opacity = '1'; item.style.transform = 'none'; }, 50);
+
+    const countEl = document.getElementById('app-count');
+    const current = parseInt(countEl.textContent);
+    countEl.textContent = `${current + 1} applications`;
+    showToast(`✅ Applied to ${applyRole} at ${applyComp}!`);
+  }
+
+  function postInternship() {
+    showToast('🚀 Internship posted successfully!');
+  }
+
+  function loginUser() {
+    closeModal('login');
+    showToast('👋 Welcome back! Logged in successfully.');
+  }
+
+  function registerUser() {
+    closeModal('register');
+    showToast('🎉 Account created! Welcome to InternSL.');
+  }
+
+  // Toast
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+</script>
+</body>
+</html>
